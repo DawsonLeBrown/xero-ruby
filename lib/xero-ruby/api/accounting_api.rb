@@ -9018,11 +9018,9 @@ module XeroRuby
       # resource path
       local_var_path = '/Invoices'
 
-      # camelize keys of incoming `where` opts
-      opts[:'where'] = opts[:'where'].map{|k,v| "#{@api_client.camelize_key(k)}#{v}"}.join(' AND ') if !opts[:'where'].nil?
       # query parameters
       query_params = opts[:query_params] || {}
-      query_params[:'where'] = opts[:'where'] if !opts[:'where'].nil?
+      query_params[:'where'] = @api_client.build_where_clause(opts[:'where']) if !opts[:'where'].nil?
       query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
       query_params[:'IDs'] = @api_client.build_collection_param(opts[:'i_ds'], :csv) if !opts[:'i_ds'].nil?
       query_params[:'InvoiceNumbers'] = @api_client.build_collection_param(opts[:'invoice_numbers'], :csv) if !opts[:'invoice_numbers'].nil?

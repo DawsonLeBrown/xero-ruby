@@ -550,5 +550,24 @@ module XeroRuby
         fail "unknown collection format: #{collection_format.inspect}"
       end
     end
+
+    def build_where_clause(where_opts)
+      where_clause = []
+      where_opts.each do |k,v|
+        #Allow searching for results within a range
+        if v.is_a?(Range)
+          if v.first.is_a?(DateTime) || v.first.is_a?(Date) || v.first.is_a?(Time)
+            #If the range is a range of dates, then format the dates for the api
+            where_clause << "#{camelize_key(k)} >=DateTime(#{v.first.strftime("%Y,%m,%d")}) AND #{camelize_key(k)} <=DateTime(#{v.last.strftime("%Y,%m,%d")})" 
+          else
+            where_clause << "#{camelize_key(k)} >=#{v.first} AND #{camelize_key(k)} <=#{v.last}" 
+          end
+        else
+          where_clause << "#{camelize_key(k)}#{v}" 
+        end
+      end 
+      where_clause.join(' AND ') 
+    end
+
   end
 end
